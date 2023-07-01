@@ -6,6 +6,7 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { ICow, ICowFilters } from './cow.interface';
 import { Cow } from './cow.model';
 import { cowSearchableFields } from './cow.constant';
+import httpStatus from 'http-status';
 
 const createCow = async (cow: ICow): Promise<ICow | null> => {
   const createdCow = Cow.create(cow);
@@ -82,10 +83,23 @@ const getSingleCow = async (id: string): Promise<ICow | null> => {
 };
 
 const updateCow = async (
-  id: string,
+  userId: string,
+  cowId: string,
   payload: Partial<ICow>
 ): Promise<ICow | null> => {
-  const result = await Cow.findOneAndUpdate({ _id: id }, payload, {
+  const cow = await Cow.findById(cowId);
+  if (!cow) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Cow does not exist');
+  }
+
+  if (cow.seller.toString() !== userId) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not the seller of this cow'
+    );
+  }
+
+  const result = await Cow.findOneAndUpdate({ _id: cowId }, payload, {
     new: true,
   }).populate('seller');
   return result;
