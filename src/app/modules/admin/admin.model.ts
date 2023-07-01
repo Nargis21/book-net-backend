@@ -39,11 +39,8 @@ const AdminSchema = new Schema<IAdmin, AdminModel>(
 
 AdminSchema.statics.isAdminExist = async function (
   phoneNumber: string
-): Promise<Pick<IAdmin, 'phoneNumber' | 'password' | 'role'> | null> {
-  return await Admin.findOne(
-    { phoneNumber },
-    { phoneNumber: 1, password: 1, role: 1 }
-  );
+): Promise<Pick<IAdmin, '_id' | 'password' | 'role'> | null> {
+  return await Admin.findOne({ phoneNumber }, { _id: 1, password: 1, role: 1 });
 };
 
 AdminSchema.statics.isPasswordMatched = async function (

@@ -1,33 +1,23 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
-import { IAdmin, IAdminLoginResponse, ILoginAdmin } from './admin.interface';
-import { Admin } from './admin.model';
+import { ILoginUser, IUserLoginResponse } from './auth.interface';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
+import { User } from '../user/user.model';
 
-const createAdmin = async (admin: IAdmin): Promise<IAdmin | null> => {
-  const createdAdmin = Admin.create(admin);
-  if (!createdAdmin) {
-    throw new ApiError(400, 'Failed to create admin!');
-  }
-  return createdAdmin;
-};
-
-const loginAdmin = async (
-  payload: ILoginAdmin
-): Promise<IAdminLoginResponse> => {
+const loginUser = async (payload: ILoginUser): Promise<IUserLoginResponse> => {
   const { phoneNumber, password } = payload;
 
   //check admin exist
-  const isAdminExist = await Admin.isAdminExist(phoneNumber);
+  const isAdminExist = await User.isUserExist(phoneNumber);
   if (!isAdminExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Admin does not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
   const { _id, password: savedPassword, role } = isAdminExist;
 
   //check password
-  if (!(await Admin.isPasswordMatched(password, savedPassword))) {
+  if (!(await User.isPasswordMatched(password, savedPassword))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
@@ -51,7 +41,6 @@ const loginAdmin = async (
   };
 };
 
-export const AdminService = {
-  createAdmin,
-  loginAdmin,
+export const AuthService = {
+  loginUser,
 };

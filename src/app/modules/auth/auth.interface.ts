@@ -1,12 +1,11 @@
 export type ILoginUser = {
-  id: string;
+  phoneNumber: string;
   password: string;
 };
 
 export type IUserLoginResponse = {
   accessToken: string;
   refreshToken?: string;
-  passwordChange: boolean;
 };
 
 export type IRefreshTokenResponse = {
