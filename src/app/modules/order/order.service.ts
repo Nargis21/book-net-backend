@@ -78,8 +78,18 @@ const createOrder = async (orderData: IOrder): Promise<IOrder | null> => {
   return newOrder;
 };
 
-const getAllOrders = async (): Promise<IOrder[]> => {
-  const result = await Order.find()
+const getAllOrders = async (
+  userId: string,
+  role: string
+): Promise<IOrder[]> => {
+  let query = {};
+  if (role === 'buyer') {
+    query = { buyer: userId };
+  }
+  if (role === 'seller') {
+    query = { 'cow.seller': userId };
+  }
+  const result = await Order.find(query)
     .populate({
       path: 'cow',
       populate: [
@@ -89,6 +99,7 @@ const getAllOrders = async (): Promise<IOrder[]> => {
       ],
     })
     .populate('buyer');
+
   return result;
 };
 
