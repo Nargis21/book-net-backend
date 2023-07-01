@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
 import { role } from './user.constant';
 import config from '../../../config';
@@ -46,9 +46,17 @@ const UserSchema = new Schema<IUser, UserModel>(
 );
 
 UserSchema.statics.isUserExist = async function (
-  phoneNumber: string
-): Promise<Pick<IUser, 'id' | 'password' | 'role'> | null> {
-  return await User.findOne({ phoneNumber }, { id: 1, password: 1, role: 1 });
+  params: string
+): Promise<Pick<IUser, '_id' | 'password' | 'role'> | null> {
+  let query;
+
+  if (Types.ObjectId.isValid(params)) {
+    query = { _id: new Types.ObjectId(params) };
+  } else {
+    query = { phoneNumber: params };
+  }
+
+  return await User.findOne(query, { _id: 1, password: 1, role: 1 });
 };
 
 UserSchema.statics.isPasswordMatched = async function (
