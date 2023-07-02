@@ -14,6 +14,7 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
 
 const getProfile = async (id: string): Promise<IUser | null> => {
   const result = await User.findById(id, {
+    _id: 0,
     name: 1,
     phoneNumber: 1,
     address: 1,
@@ -24,7 +25,7 @@ const getProfile = async (id: string): Promise<IUser | null> => {
 const updateProfile = async (
   id: string,
   payload: Partial<IUser>
-): Promise<IUser | null> => {
+): Promise<Pick<IUser, 'name' | 'address' | 'phoneNumber'> | null> => {
   const isExist = await User.findById(id);
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
@@ -41,6 +42,7 @@ const updateProfile = async (
   }
   const result = await User.findOneAndUpdate({ _id: id }, updatedUserData, {
     new: true,
+    select: '-_id name address phoneNumber',
   });
   return result;
 };

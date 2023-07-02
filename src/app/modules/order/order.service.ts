@@ -112,7 +112,42 @@ const getAllOrders = async (
   return filteredOrders;
 };
 
+const getSingleOrder = async (
+  userId: string,
+  orderId: string,
+  role: string
+): Promise<IOrder | null> => {
+  const order = await Order.findById(orderId)
+    .populate({
+      path: 'cow',
+      populate: [
+        {
+          path: 'seller',
+        },
+      ],
+    })
+    .populate('buyer');
+  if (!order) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Order does not exist');
+  }
+
+  if (role === 'seller' && order.cow.seller._id.toString() !== userId) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not the seller of this order'
+    );
+  }
+  if (role === 'buyer' && order.buyer._id.toString() !== userId) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not the buyer of this order'
+    );
+  }
+  return order;
+};
+
 export const OrderService = {
   createOrder,
   getAllOrders,
+  getSingleOrder,
 };

@@ -32,7 +32,7 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
   const id = req.user?._id;
   const updatedData = req.body;
   const result = await UserService.updateProfile(id, updatedData);
-  sendResponse<IUser>(res, {
+  sendResponse<Pick<IUser, 'name' | 'address' | 'phoneNumber'> | null>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Profile updated successfully',
