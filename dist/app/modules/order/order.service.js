@@ -117,7 +117,8 @@ const getSingleOrder = (userId, orderId, role) => __awaiter(void 0, void 0, void
     if (!order) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'Order does not exist');
     }
-    if (role === 'seller' && order.cow.seller._id.toString() !== userId) {
+    if (role === 'seller' &&
+        order.cow.seller._id.toString() !== userId) {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'You are not the seller of this order');
     }
     if (role === 'buyer' && order.buyer._id.toString() !== userId) {
