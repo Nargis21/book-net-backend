@@ -82,14 +82,7 @@ const getAllOrders = async (
   userId: string,
   role: string
 ): Promise<IOrder[]> => {
-  let query = {};
-  if (role === 'buyer') {
-    query = { buyer: userId };
-  }
-  if (role === 'seller') {
-    query = { 'cow.seller': userId };
-  }
-  const result = await Order.find(query)
+  const orders = await Order.find()
     .populate({
       path: 'cow',
       populate: [
@@ -99,8 +92,24 @@ const getAllOrders = async (
       ],
     })
     .populate('buyer');
+  let filteredOrders: IOrder[] = [];
 
-  return result;
+  if (role === 'admin') {
+    // Admin can access all orders
+    filteredOrders = orders;
+  } else if (role === 'buyer') {
+    // Buyer can access their own orders
+    filteredOrders = orders.filter(
+      order => order.buyer._id.toString() === userId
+    );
+  } else if (role === 'seller') {
+    // Seller can access orders related to their cows
+    filteredOrders = orders.filter(
+      order => order.cow.seller._id.toString() === userId
+    );
+  }
+
+  return filteredOrders;
 };
 
 export const OrderService = {

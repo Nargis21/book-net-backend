@@ -105,8 +105,22 @@ const updateCow = async (
   return result;
 };
 
-const deleteCow = async (id: string): Promise<ICow | null> => {
-  const result = await Cow.findByIdAndDelete(id);
+const deleteCow = async (
+  userId: string,
+  cowId: string
+): Promise<ICow | null> => {
+  const cow = await Cow.findById(cowId);
+  if (!cow) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Cow does not exist');
+  }
+
+  if (cow.seller.toString() !== userId) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not the seller of this cow'
+    );
+  }
+  const result = await Cow.findByIdAndDelete(cowId);
   return result;
 };
 
