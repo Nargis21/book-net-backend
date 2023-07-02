@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, Types, model } from 'mongoose';
 import { IUser, UserModel } from './user.interface';
@@ -71,6 +72,21 @@ UserSchema.pre('save', async function (next) {
   const user = this;
   user.password = await bcrypt.hash(
     user.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+
+UserSchema.pre('findOneAndUpdate', async function (next) {
+  const update: any = this.getUpdate();
+
+  if (!update.password) {
+    // No password update, proceed to the next middleware
+    return next();
+  }
+  // Hash the updated password
+  update.password = await bcrypt.hash(
+    update.password,
     Number(config.bcrypt_salt_rounds)
   );
   next();
