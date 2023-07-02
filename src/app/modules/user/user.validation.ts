@@ -48,8 +48,22 @@ const updateUserZodSchema = z.object({
     income: z.number().optional(),
   }),
 });
+const updateProfileZodSchema = z.object({
+  body: z.object({
+    password: z.string().optional(),
+    name: z
+      .object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+      })
+      .optional(),
+    address: z.string().optional(),
+    phoneNumber: z.string().optional(),
+  }),
+});
 
 export const UserValidation = {
   createUserZodSchema,
   updateUserZodSchema,
+  updateProfileZodSchema,
 };

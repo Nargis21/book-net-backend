@@ -17,6 +17,29 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getProfile = catchAsync(async (req: Request, res: Response) => {
+  const id = req.user?._id;
+  const result = await UserService.getProfile(id);
+  sendResponse<IUser | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User's information retrieved successfully",
+    data: result,
+  });
+});
+
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+  const id = req.user?._id;
+  const updatedData = req.body;
+  const result = await UserService.updateProfile(id, updatedData);
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile updated successfully',
+    data: result,
+  });
+});
+
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getAllUsers();
   sendResponse<IUser[]>(res, {
@@ -63,6 +86,8 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
   createUser,
+  getProfile,
+  updateProfile,
   getAllUsers,
   getSingleUser,
   updateUser,

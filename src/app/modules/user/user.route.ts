@@ -7,6 +7,17 @@ import { ENUM_USER_ROLE } from '../../../enums/users';
 
 const router = express.Router();
 
+router.get(
+  '/my-profile',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
+  UserController.getProfile
+);
+router.patch(
+  '/my-profile',
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
+  validateRequest(UserValidation.updateProfileZodSchema),
+  UserController.updateProfile
+);
 router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser);
 router.patch(
   '/:id',

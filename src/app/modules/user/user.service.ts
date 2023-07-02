@@ -12,6 +12,39 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
   return createdUser;
 };
 
+const getProfile = async (id: string): Promise<IUser | null> => {
+  const result = await User.findById(id, {
+    name: 1,
+    phoneNumber: 1,
+    address: 1,
+  });
+  return result;
+};
+
+const updateProfile = async (
+  id: string,
+  payload: Partial<IUser>
+): Promise<IUser | null> => {
+  const isExist = await User.findById(id);
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  const { name, ...userData } = payload;
+  const updatedUserData = { ...userData };
+
+  if (name && Object.keys(name).length > 0) {
+    Object.keys(name).forEach(key => {
+      const nameKey = `name.${key}` as keyof Partial<IUser>;
+      (updatedUserData as any)[nameKey] = name[key as keyof typeof name];
+    });
+  }
+  const result = await User.findOneAndUpdate({ _id: id }, updatedUserData, {
+    new: true,
+  });
+  return result;
+};
+
 const getAllUsers = async (): Promise<IUser[]> => {
   const result = await User.find();
   return result;
@@ -53,6 +86,8 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
 
 export const UserService = {
   createUser,
+  getProfile,
+  updateProfile,
   getAllUsers,
   getSingleUser,
   updateUser,
