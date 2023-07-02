@@ -5,6 +5,7 @@ import { IOrder } from './order.interface';
 import { Cow } from '../cow/cow.model';
 import { Order } from './order.model';
 import { User } from '../user/user.model';
+import { ICow } from '../cow/cow.interface';
 
 const createOrder = async (orderData: IOrder): Promise<IOrder | null> => {
   //get cow data
@@ -105,7 +106,7 @@ const getAllOrders = async (
   } else if (role === 'seller') {
     // Seller can access orders related to their cows
     filteredOrders = orders.filter(
-      order => order.cow.seller._id.toString() === userId
+      order => (order.cow as ICow).seller._id.toString() === userId
     );
   }
 
@@ -131,7 +132,10 @@ const getSingleOrder = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'Order does not exist');
   }
 
-  if (role === 'seller' && order.cow.seller._id.toString() !== userId) {
+  if (
+    role === 'seller' &&
+    (order.cow as ICow).seller._id.toString() !== userId
+  ) {
     throw new ApiError(
       httpStatus.FORBIDDEN,
       'You are not the seller of this order'

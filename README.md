@@ -4,7 +4,9 @@
 
 ## Application Routes
 
-### User
+### Main Part
+
+## (Auth)User
 
 - api/v1/auth/signup (POST)
 - api/v1/users (GET)
