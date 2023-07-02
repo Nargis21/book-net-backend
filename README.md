@@ -23,3 +23,11 @@
 - Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/64a1873399f4764d438d9d4f (Single GET)
 - Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/64a1873399f4764d438d9d4f (PATCH)
 - Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/64a1873399f4764d438d9d4f (DELETE)
+
+## Cow
+
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/cows (POST)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/cows (GET)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/cows/64a190e64ba73b9c962f2434 (Single GET)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/cows/64a190204ba73b9c962f2430 (PATCH)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/cows/64a190204ba73b9c962f2430 (DELETE)
