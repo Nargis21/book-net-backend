@@ -92,10 +92,10 @@ UserSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-UserSchema.methods.toJSON = function () {
-  const admin = this.toObject();
-  delete admin.password;
-  return admin;
-};
+// UserSchema.methods.toJSON = function () {
+//   const admin = this.toObject();
+//   delete admin.password;
+//   return admin;
+// };
 
 export const User = model<IUser, UserModel>('User', UserSchema);
