@@ -19,11 +19,13 @@ const admin_model_1 = require("./admin.model");
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const config_1 = __importDefault(require("../../../config"));
 const createAdmin = (admin) => __awaiter(void 0, void 0, void 0, function* () {
-    const createdAdmin = admin_model_1.Admin.create(admin);
+    const createdAdmin = yield admin_model_1.Admin.create(admin);
     if (!createdAdmin) {
         throw new ApiError_1.default(400, 'Failed to create admin!');
     }
-    return createdAdmin;
+    // Exclude the password field from the response
+    const responseAdmin = yield admin_model_1.Admin.findById(createdAdmin._id).select('-password');
+    return responseAdmin;
 });
 const loginAdmin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { phoneNumber, password } = payload;

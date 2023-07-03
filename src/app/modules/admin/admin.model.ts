@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Schema, model } from 'mongoose';
 import { AdminModel, IAdmin } from './admin.interface';
@@ -55,6 +56,21 @@ AdminSchema.pre('save', async function (next) {
   const admin = this;
   admin.password = await bcrypt.hash(
     admin.password,
+    Number(config.bcrypt_salt_rounds)
+  );
+  next();
+});
+
+AdminSchema.pre('findOneAndUpdate', async function (next) {
+  const update: any = this.getUpdate();
+
+  if (!update.password) {
+    // No password update, proceed to the next middleware
+    return next();
+  }
+  // Hash the updated password
+  update.password = await bcrypt.hash(
+    update.password,
     Number(config.bcrypt_salt_rounds)
   );
   next();

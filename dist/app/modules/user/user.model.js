@@ -21,7 +21,7 @@ const config_1 = __importDefault(require("../../../config"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserSchema = new mongoose_1.Schema({
     role: { type: String, enum: user_constant_1.role, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     name: {
         type: {
             firstName: {
@@ -92,9 +92,4 @@ UserSchema.pre('findOneAndUpdate', function (next) {
         next();
     });
 });
-UserSchema.methods.toJSON = function () {
-    const admin = this.toObject();
-    delete admin.password;
-    return admin;
-};
 exports.User = (0, mongoose_1.model)('User', UserSchema);

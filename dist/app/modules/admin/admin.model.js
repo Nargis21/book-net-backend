@@ -64,9 +64,4 @@ AdminSchema.pre('save', function (next) {
         next();
     });
 });
-AdminSchema.methods.toJSON = function () {
-    const admin = this.toObject();
-    delete admin.password;
-    return admin;
-};
 exports.Admin = (0, mongoose_1.model)('Admin', AdminSchema);

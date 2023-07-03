@@ -27,22 +27,19 @@ const createAdminZodSchema = z.object({
   }),
 });
 
-// const updateUserZodSchema = z.object({
-//   body: z.object({
-//     role: z.enum([...role] as [string, ...string[]]).optional(),
-//     password: z.string().optional(),
-//     name: z
-//       .object({
-//         firstName: z.string().optional(),
-//         lastName: z.string().optional(),
-//       })
-//       .optional(),
-//     address: z.string().optional(),
-//     phoneNumber: z.string().optional(),
-//     budget: z.number().optional(),
-//     income: z.number().optional(),
-//   }),
-// });
+const updateAdminProfileZodSchema = z.object({
+  body: z.object({
+    password: z.string().optional(),
+    name: z
+      .object({
+        firstName: z.string().optional(),
+        lastName: z.string().optional(),
+      })
+      .optional(),
+    address: z.string().optional(),
+    phoneNumber: z.string().optional(),
+  }),
+});
 
 const loginAdminZodSchema = z.object({
   body: z.object({
@@ -58,4 +55,5 @@ const loginAdminZodSchema = z.object({
 export const AdminValidation = {
   createAdminZodSchema,
   loginAdminZodSchema,
+  updateAdminProfileZodSchema,
 };

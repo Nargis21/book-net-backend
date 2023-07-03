@@ -4,7 +4,7 @@ import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
 import { AdminService } from './admin.service';
 import config from '../../../config';
-import { IAdminLoginResponse } from './admin.interface';
+import { IAdmin, IAdminLoginResponse } from './admin.interface';
 
 const createAdmin = catchAsync(async (req: Request, res: Response) => {
   const { ...adminData } = req.body;
@@ -13,6 +13,29 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Admin created successfully',
+    data: result,
+  });
+});
+
+const getProfile = catchAsync(async (req: Request, res: Response) => {
+  const id = req.user?._id;
+  const result = await AdminService.getProfile(id);
+  sendResponse<IAdmin | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Admin's information retrieved successfully",
+    data: result,
+  });
+});
+
+const updateProfile = catchAsync(async (req: Request, res: Response) => {
+  const id = req.user?._id;
+  const updatedData = req.body;
+  const result = await AdminService.updateProfile(id, updatedData);
+  sendResponse<Pick<IAdmin, 'name' | 'address' | 'phoneNumber'> | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Profile updated successfully',
     data: result,
   });
 });
@@ -40,4 +63,6 @@ const loginAdmin = catchAsync(async (req: Request, res: Response) => {
 export const AdminController = {
   createAdmin,
   loginAdmin,
+  getProfile,
+  updateProfile,
 };

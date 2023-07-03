@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import { IAdmin, IAdminLoginResponse, ILoginAdmin } from './admin.interface';
@@ -17,6 +18,41 @@ const createAdmin = async (admin: IAdmin): Promise<IAdmin | null> => {
   );
 
   return responseAdmin;
+};
+
+const getProfile = async (id: string): Promise<IAdmin | null> => {
+  const result = await Admin.findById(id, {
+    _id: 0,
+    name: 1,
+    phoneNumber: 1,
+    address: 1,
+  });
+  return result;
+};
+
+const updateProfile = async (
+  id: string,
+  payload: Partial<IAdmin>
+): Promise<Pick<IAdmin, 'name' | 'address' | 'phoneNumber'> | null> => {
+  const isExist = await Admin.findById(id);
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Admin not found');
+  }
+
+  const { name, ...adminData } = payload;
+  const updatedAdminData = { ...adminData };
+
+  if (name && Object.keys(name).length > 0) {
+    Object.keys(name).forEach(key => {
+      const nameKey = `name.${key}` as keyof Partial<IAdmin>;
+      (updatedAdminData as any)[nameKey] = name[key as keyof typeof name];
+    });
+  }
+  const result = await Admin.findOneAndUpdate({ _id: id }, updatedAdminData, {
+    new: true,
+    select: '-_id name address phoneNumber',
+  });
+  return result;
 };
 
 const loginAdmin = async (
@@ -59,4 +95,6 @@ const loginAdmin = async (
 export const AdminService = {
   createAdmin,
   loginAdmin,
+  getProfile,
+  updateProfile,
 };
