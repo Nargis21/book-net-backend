@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 const UserSchema = new Schema<IUser, UserModel>(
   {
     role: { type: String, enum: role, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     name: {
       type: {
         firstName: {
@@ -91,11 +91,5 @@ UserSchema.pre('findOneAndUpdate', async function (next) {
   );
   next();
 });
-
-// UserSchema.methods.toJSON = function () {
-//   const admin = this.toObject();
-//   delete admin.password;
-//   return admin;
-// };
 
 export const User = model<IUser, UserModel>('User', UserSchema);

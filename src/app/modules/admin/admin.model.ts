@@ -60,10 +60,4 @@ AdminSchema.pre('save', async function (next) {
   next();
 });
 
-AdminSchema.methods.toJSON = function () {
-  const admin = this.toObject();
-  delete admin.password;
-  return admin;
-};
-
 export const Admin = model<IAdmin, AdminModel>('Admin', AdminSchema);

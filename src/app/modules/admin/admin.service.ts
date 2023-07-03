@@ -7,11 +7,16 @@ import config from '../../../config';
 import { Secret } from 'jsonwebtoken';
 
 const createAdmin = async (admin: IAdmin): Promise<IAdmin | null> => {
-  const createdAdmin = Admin.create(admin);
+  const createdAdmin = await Admin.create(admin);
   if (!createdAdmin) {
     throw new ApiError(400, 'Failed to create admin!');
   }
-  return createdAdmin;
+  // Exclude the password field from the response
+  const responseAdmin = await Admin.findById(createdAdmin._id).select(
+    '-password'
+  );
+
+  return responseAdmin;
 };
 
 const loginAdmin = async (
