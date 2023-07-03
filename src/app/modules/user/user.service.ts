@@ -5,11 +5,17 @@ import { IUser } from './user.interface';
 import { User } from './user.model';
 
 const createUser = async (user: IUser): Promise<IUser | null> => {
-  const createdUser = User.create(user);
+  const createdUser = await User.create(user);
   if (!createdUser) {
     throw new ApiError(400, 'Failed to create user!');
   }
-  return createdUser;
+
+  // Exclude the password field from the response
+  const responseAdmin = await User.findById(createdUser._id).select(
+    '-password'
+  );
+
+  return responseAdmin;
 };
 
 const getProfile = async (id: string): Promise<IUser | null> => {
