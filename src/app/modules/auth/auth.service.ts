@@ -14,11 +14,11 @@ const loginUser = async (payload: ILoginUser): Promise<IUserLoginResponse> => {
   const { phoneNumber, password } = payload;
 
   //check admin exist
-  const isAdminExist = await User.isUserExist(phoneNumber);
-  if (!isAdminExist) {
+  const isUserExist = await User.isUserExist(phoneNumber);
+  if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
-  const { _id, password: savedPassword, role } = isAdminExist;
+  const { _id, password: savedPassword, role } = isUserExist;
 
   //check password
   if (!(await User.isPasswordMatched(password, savedPassword))) {
