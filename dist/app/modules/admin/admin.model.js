@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Admin = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-this-alias */
 const mongoose_1 = require("mongoose");
 const admin_constant_1 = require("./admin.constant");
@@ -61,6 +62,18 @@ AdminSchema.pre('save', function (next) {
         //hash password
         const admin = this;
         admin.password = yield bcrypt_1.default.hash(admin.password, Number(config_1.default.bcrypt_salt_rounds));
+        next();
+    });
+});
+AdminSchema.pre('findOneAndUpdate', function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const update = this.getUpdate();
+        if (!update.password) {
+            // No password update, proceed to the next middleware
+            return next();
+        }
+        // Hash the updated password
+        update.password = yield bcrypt_1.default.hash(update.password, Number(config_1.default.bcrypt_salt_rounds));
         next();
     });
 });

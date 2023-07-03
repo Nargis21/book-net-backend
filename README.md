@@ -39,11 +39,18 @@
 
 ### Bonus Part
 
-## My Profile
+## My Profile (User)
 
-- https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/my-profile (GET)
-- https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/my-profile (PATCH)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/my-profile (GET)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/users/my-profile (PATCH)
 
 ## Order
 
 - Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/orders/64a1ba45273ce9fa31e83b39 (Single GET)
+
+### Optional Part
+
+## My Profile (Admin)
+
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/admins/my-profile (GET)
+- Route: https://digital-cow-hat-backend-with-auth.vercel.app/api/v1/admins/my-profile (PATCH)

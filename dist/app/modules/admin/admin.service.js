@@ -8,11 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdminService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const admin_model_1 = require("./admin.model");
@@ -26,6 +38,34 @@ const createAdmin = (admin) => __awaiter(void 0, void 0, void 0, function* () {
     // Exclude the password field from the response
     const responseAdmin = yield admin_model_1.Admin.findById(createdAdmin._id).select('-password');
     return responseAdmin;
+});
+const getProfile = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield admin_model_1.Admin.findById(id, {
+        _id: 0,
+        name: 1,
+        phoneNumber: 1,
+        address: 1,
+    });
+    return result;
+});
+const updateProfile = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const isExist = yield admin_model_1.Admin.findById(id);
+    if (!isExist) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'Admin not found');
+    }
+    const { name } = payload, adminData = __rest(payload, ["name"]);
+    const updatedAdminData = Object.assign({}, adminData);
+    if (name && Object.keys(name).length > 0) {
+        Object.keys(name).forEach(key => {
+            const nameKey = `name.${key}`;
+            updatedAdminData[nameKey] = name[key];
+        });
+    }
+    const result = yield admin_model_1.Admin.findOneAndUpdate({ _id: id }, updatedAdminData, {
+        new: true,
+        select: '-_id name address phoneNumber',
+    });
+    return result;
 });
 const loginAdmin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { phoneNumber, password } = payload;
@@ -51,4 +91,6 @@ const loginAdmin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 exports.AdminService = {
     createAdmin,
     loginAdmin,
+    getProfile,
+    updateProfile,
 };
