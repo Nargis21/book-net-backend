@@ -11,19 +11,6 @@ const UserSchema = new Schema<IUser, UserModel>(
     role: { type: String, enum: role, required: true },
     password: { type: String, required: true, select: 0 },
     name: {
-      type: {
-        firstName: {
-          type: String,
-          required: true,
-        },
-        lastName: {
-          type: String,
-          required: true,
-        },
-      },
-      required: true,
-    },
-    address: {
       type: String,
       required: true,
     },
@@ -32,13 +19,10 @@ const UserSchema = new Schema<IUser, UserModel>(
       required: true,
       unique: true,
     },
-    budget: {
-      type: Number,
+    email: {
+      type: String,
       required: true,
-    },
-    income: {
-      type: Number,
-      required: true,
+      unique: true,
     },
   },
   {
@@ -54,7 +38,7 @@ UserSchema.statics.isUserExist = async function (
   if (Types.ObjectId.isValid(params)) {
     query = { _id: new Types.ObjectId(params) };
   } else {
-    query = { phoneNumber: params };
+    query = { email: params };
   }
 
   return await User.findOne(query, { _id: 1, password: 1, role: 1 });

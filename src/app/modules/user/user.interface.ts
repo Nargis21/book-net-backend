@@ -2,22 +2,17 @@
 import { Document, Model } from 'mongoose';
 
 export type IUser = Document & {
-  role: 'seller' | 'buyer';
+  role: 'owner' | 'renter';
   password: string;
-  name: {
-    firstName: string;
-    lastName: string;
-  };
-  address: string;
+  name: string;
   phoneNumber: string;
-  budget: number;
-  income: number;
+  email: string;
 };
 
 //statics
 export type UserModel = {
   isUserExist(
-    phoneNumber: string
+    email: string
   ): Promise<Pick<IUser, '_id' | 'password' | 'role'> | null>;
   isPasswordMatched(
     givenPassword: string,

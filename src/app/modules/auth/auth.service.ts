@@ -11,10 +11,10 @@ import { Secret } from 'jsonwebtoken';
 import { User } from '../user/user.model';
 
 const loginUser = async (payload: ILoginUser): Promise<IUserLoginResponse> => {
-  const { phoneNumber, password } = payload;
+  const { email, password } = payload;
 
   //check admin exist
-  const isUserExist = await User.isUserExist(phoneNumber);
+  const isUserExist = await User.isUserExist(email);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }

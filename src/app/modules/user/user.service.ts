@@ -11,11 +11,9 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
   }
 
   // Exclude the password field from the response
-  const responseAdmin = await User.findById(createdUser._id).select(
-    '-password'
-  );
+  const responseUser = await User.findById(createdUser._id).select('-password');
 
-  return responseAdmin;
+  return responseUser;
 };
 
 const getProfile = async (id: string): Promise<IUser | null> => {

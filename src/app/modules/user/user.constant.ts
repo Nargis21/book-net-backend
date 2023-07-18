@@ -1,1 +1,1 @@
-export const role = ['seller', 'buyer'];
+export const role = ['owner', 'seller'];
