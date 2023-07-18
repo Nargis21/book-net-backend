@@ -47,7 +47,7 @@ const createBooking = async (
 //   return filteredOrders;
 // };
 
-const getBookings = async (userId: string): Promise<IBooking | null> => {
+const getBookings = async (userId: string): Promise<IBooking[]> => {
   const bookings = await Booking.find({ renter: userId })
     .populate({
       path: 'house',
@@ -62,8 +62,28 @@ const getBookings = async (userId: string): Promise<IBooking | null> => {
   return bookings;
 };
 
+const deleteBooking = async (
+  userId: string,
+  bookingId: string
+): Promise<IBooking | null> => {
+  const booking = await Booking.findById(bookingId);
+  if (!booking) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Booking does not exist');
+  }
+
+  // if (house.owner.toString() !== userId) {
+  //   throw new ApiError(
+  //     httpStatus.FORBIDDEN,
+  //     'You are not the owner of this house'
+  //   );
+  // }
+
+  const result = await Booking.findByIdAndDelete(bookingId);
+  return result;
+};
+
 export const BookingService = {
   createBooking,
   getBookings,
-  // getSingleOrder,
+  deleteBooking,
 };

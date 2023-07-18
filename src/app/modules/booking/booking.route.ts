@@ -26,4 +26,10 @@ router.get(
   BookingController.getBookings
 );
 
+router.delete(
+  '/:id',
+  // auth(ENUM_USER_ROLE.SELLER),
+  BookingController.deleteBooking
+);
+
 export const BookingRoutes = router;

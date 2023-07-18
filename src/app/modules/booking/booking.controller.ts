@@ -33,7 +33,7 @@ const getBookings = catchAsync(async (req: Request, res: Response) => {
   // const userId = req.user?._id;
   const userId = req.params.id;
   const result = await BookingService.getBookings(userId);
-  sendResponse<IBooking | null>(res, {
+  sendResponse<IBooking[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Booking information retrieved successfully',
@@ -41,8 +41,20 @@ const getBookings = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteBooking = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?._id;
+  const bookingId = req.params.id;
+  const result = await BookingService.deleteBooking(userId, bookingId);
+  sendResponse<IBooking | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Booking deleted successfully',
+    data: result,
+  });
+});
+
 export const BookingController = {
   createBooking,
   getBookings,
-  // getSingleOrder,
+  deleteBooking,
 };
