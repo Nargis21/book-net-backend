@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { breed, category, label, location } from './house.constant';
 
 //req validation with zod
-const createCowZodSchema = z.object({
+const createHouseZodSchema = z.object({
   body: z.object({
     name: z.string().nonempty('Name is required'),
     address: z.string().nonempty('Address is required'),
@@ -32,21 +31,27 @@ const createCowZodSchema = z.object({
     owner: z.string().nonempty('Owner Id is required'),
   }),
 });
-
-const updateCowZodSchema = z.object({
+const updateHouseZodSchema = z.object({
   body: z.object({
     name: z.string().optional(),
-    age: z.number().optional(),
-    location: z.enum([...location] as [string, ...string[]]).optional(),
-    breed: z.enum([...breed] as [string, ...string[]]).optional(),
-    weight: z.number().optional(),
-    label: z.enum([...label] as [string, ...string[]]).optional(),
-    category: z.enum([...category] as [string, ...string[]]).optional(),
-    seller: z.string().optional(),
+    address: z.string().optional(),
+    city: z.string().optional(),
+    bedrooms: z.number().min(1).positive().optional(),
+    bathrooms: z.number().min(1).positive().optional(),
+    roomSize: z.number().min(1).positive().optional(),
+    picture: z.string().optional(),
+    availabilityDate: z.string().optional(),
+    rentPerMonth: z.number().min(1).positive().optional(),
+    phoneNumber: z
+      .string()
+      .regex(/^01[0-9]{9}$/)
+      .optional(),
+    description: z.string().optional(),
+    owner: z.string().optional(),
   }),
 });
 
-export const CowValidation = {
-  createCowZodSchema,
-  updateCowZodSchema,
+export const HouseValidation = {
+  createHouseZodSchema,
+  updateHouseZodSchema,
 };

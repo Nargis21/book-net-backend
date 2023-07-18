@@ -33,9 +33,9 @@ const getAllHouses = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getOwnedCow = catchAsync(async (req: Request, res: Response) => {
+const getOwnedHouse = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-  const result = await HouseService.getOwnedCow(id);
+  const result = await HouseService.getOwnedHouse(id);
   sendResponse<IHouse[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -44,35 +44,35 @@ const getOwnedCow = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const updateCow = catchAsync(async (req: Request, res: Response) => {
-//   const userId = req.user?._id;
-//   const cowId = req.params.id;
-//   const updatedData = req.body;
-//   const result = await CowService.updateCow(userId, cowId, updatedData);
-//   sendResponse<ICow>(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Cow updated successfully',
-//     data: result,
-//   });
-// });
+const updateHouse = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?._id;
+  const houseId = req.params.id;
+  const updatedData = req.body;
+  const result = await HouseService.updateHouse(userId, houseId, updatedData);
+  sendResponse<IHouse>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'House updated successfully',
+    data: result,
+  });
+});
 
-// const deleteCow = catchAsync(async (req: Request, res: Response) => {
-//   const userId = req.user?._id;
-//   const cowId = req.params.id;
-//   const result = await CowService.deleteCow(userId, cowId);
-//   sendResponse<ICow | null>(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Cow deleted successfully',
-//     data: result,
-//   });
-// });
+const deleteHouse = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?._id;
+  const houseId = req.params.id;
+  const result = await HouseService.deleteHouse(userId, houseId);
+  sendResponse<IHouse | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'House deleted successfully',
+    data: result,
+  });
+});
 
 export const HouseController = {
   createHouse,
-  getOwnedCow,
+  getOwnedHouse,
   getAllHouses,
-  // updateCow,
-  // deleteCow,
+  updateHouse,
+  deleteHouse,
 };

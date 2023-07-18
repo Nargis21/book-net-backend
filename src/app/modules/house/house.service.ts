@@ -70,57 +70,58 @@ const getAllHouses = async (
   };
 };
 
-const getOwnedCow = async (id: string): Promise<IHouse[]> => {
+const getOwnedHouse = async (id: string): Promise<IHouse[]> => {
   const result = await House.find({ owner: id }).populate('owner');
   return result;
 };
 
-// const updateCow = async (
-//   userId: string,
-//   cowId: string,
-//   payload: Partial<IHouse>
-// ): Promise<IHouse | null> => {
-//   const cow = await House.findById(cowId);
-//   if (!cow) {
-//     throw new ApiError(httpStatus.NOT_FOUND, 'Cow does not exist');
-//   }
+const updateHouse = async (
+  userId: string,
+  houseId: string,
+  payload: Partial<IHouse>
+): Promise<IHouse | null> => {
+  const house = await House.findById(houseId);
+  if (!house) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'House does not exist');
+  }
 
-//   if (cow.seller.toString() !== userId) {
-//     throw new ApiError(
-//       httpStatus.FORBIDDEN,
-//       'You are not the seller of this cow'
-//     );
-//   }
+  // if (house.owner.toString() !== userId) {
+  //   throw new ApiError(
+  //     httpStatus.FORBIDDEN,
+  //     'You are not the owner of this house'
+  //   );
+  // }
 
-//   const result = await House.findOneAndUpdate({ _id: cowId }, payload, {
-//     new: true,
-//   }).populate('seller');
-//   return result;
-// };
+  const result = await House.findOneAndUpdate({ _id: houseId }, payload, {
+    new: true,
+  }).populate('owner');
+  return result;
+};
 
-// const deleteCow = async (
-//   userId: string,
-//   cowId: string
-// ): Promise<IHouse | null> => {
-//   const cow = await House.findById(cowId);
-//   if (!cow) {
-//     throw new ApiError(httpStatus.NOT_FOUND, 'Cow does not exist');
-//   }
+const deleteHouse = async (
+  userId: string,
+  houseId: string
+): Promise<IHouse | null> => {
+  const house = await House.findById(houseId);
+  if (!house) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'house does not exist');
+  }
 
-//   if (cow.seller.toString() !== userId) {
-//     throw new ApiError(
-//       httpStatus.FORBIDDEN,
-//       'You are not the seller of this cow'
-//     );
-//   }
-//   const result = await House.findByIdAndDelete(cowId);
-//   return result;
-// };
+  // if (house.owner.toString() !== userId) {
+  //   throw new ApiError(
+  //     httpStatus.FORBIDDEN,
+  //     'You are not the owner of this house'
+  //   );
+  // }
+
+  const result = await House.findByIdAndDelete(houseId);
+  return result;
+};
 
 export const HouseService = {
   createHouse,
   getAllHouses,
-  getOwnedCow,
-  // updateCow,
-  // deleteCow,
+  getOwnedHouse,
+  updateHouse,
+  deleteHouse,
 };

@@ -1,6 +1,6 @@
 import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
-import { CowValidation } from './house.validation';
+import { HouseValidation } from './house.validation';
 import { HouseController } from './house.controller';
 import { ENUM_USER_ROLE } from '../../../enums/users';
 import auth from '../../middlewares/auth';
@@ -10,24 +10,28 @@ const router = express.Router();
 router.post(
   '/',
   // auth(ENUM_USER_ROLE.SELLER),
-  validateRequest(CowValidation.createCowZodSchema),
+  validateRequest(HouseValidation.createHouseZodSchema),
   HouseController.createHouse
 );
 
 router.get(
   '/:id',
   // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.BUYER),
-  HouseController.getOwnedCow
+  HouseController.getOwnedHouse
 );
 
-// router.patch(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.SELLER),
-//   validateRequest(CowValidation.updateCowZodSchema),
-//   CowController.updateCow
-// );
+router.patch(
+  '/:id',
+  // auth(ENUM_USER_ROLE.SELLER),
+  validateRequest(HouseValidation.updateHouseZodSchema),
+  HouseController.updateHouse
+);
 
-// router.delete('/:id', auth(ENUM_USER_ROLE.SELLER), CowController.deleteCow);
+router.delete(
+  '/:id',
+  // auth(ENUM_USER_ROLE.SELLER),
+  HouseController.deleteHouse
+);
 
 router.get(
   '/',
