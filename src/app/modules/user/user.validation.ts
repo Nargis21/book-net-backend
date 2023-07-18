@@ -16,9 +16,11 @@ const createUserZodSchema = z.object({
     phoneNumber: z.string({
       required_error: 'Phone number is required',
     }),
-    email: z.string({
-      required_error: 'Email is required',
-    }),
+    email: z
+      .string({
+        required_error: 'Email is required',
+      })
+      .email(),
   }),
 });
 const updateUserZodSchema = z.object({

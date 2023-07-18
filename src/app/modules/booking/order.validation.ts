@@ -1,16 +1,25 @@
 import { z } from 'zod';
 
-const createOrderZodSchema = z.object({
+const createBookingZodSchema = z.object({
   body: z.object({
-    cow: z.string({
-      required_error: 'Cow Id is required',
+    name: z.string({
+      required_error: 'Name is required',
     }),
-    buyer: z.string({
-      required_error: 'Buyer Id is required',
+    email: z.string({
+      required_error: 'Email is required',
+    }),
+    phoneNumber: z.string({
+      required_error: 'Phone number is required',
+    }),
+    renter: z.string({
+      required_error: 'Renter Id is required',
+    }),
+    house: z.string({
+      required_error: 'House Id is required',
     }),
   }),
 });
 
-export const OrderValidation = {
-  createOrderZodSchema,
+export const BookingValidation = {
+  createBookingZodSchema,
 };
