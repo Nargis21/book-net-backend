@@ -23,11 +23,23 @@ export const label = ['for sale', 'sold out'];
 
 export const category = ['Dairy', 'Beef', 'Dual Purpose'];
 
-export const cowFilterableFields = [
+export const houseFilterableFields = [
   'searchTerm',
-  'minPrice',
-  'maxPrice',
-  'location',
+  'city',
+  'bedrooms',
+  'bathrooms',
+  'roomSize',
+  'availabilityDate',
+  'rentPerMonth',
 ];
 
-export const cowSearchableFields = ['location', 'breed', 'category'];
+export const houseSearchableFields = [
+  'name',
+  'address',
+  'city',
+  // 'bedrooms',
+  // 'bathrooms',
+  // 'roomSize',
+  // 'availabilityDate',
+  // 'rentPerMonth',
+];

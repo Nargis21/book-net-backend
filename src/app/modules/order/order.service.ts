@@ -2,10 +2,10 @@ import { startSession } from 'mongoose';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
 import { IOrder } from './order.interface';
-import { Cow } from '../cow/cow.model';
+import { Cow } from '../house/house.model';
 import { Order } from './order.model';
 import { User } from '../user/user.model';
-import { ICow } from '../cow/cow.interface';
+import { ICow } from '../house/house.interface';
 
 const createOrder = async (orderData: IOrder): Promise<IOrder | null> => {
   //get cow data
