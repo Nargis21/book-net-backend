@@ -61,19 +61,4 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
-UserSchema.pre('findOneAndUpdate', async function (next) {
-  const update: any = this.getUpdate();
-
-  if (!update.password) {
-    // No password update, proceed to the next middleware
-    return next();
-  }
-  // Hash the updated password
-  update.password = await bcrypt.hash(
-    update.password,
-    Number(config.bcrypt_salt_rounds)
-  );
-  next();
-});
-
 export const User = model<IUser, UserModel>('User', UserSchema);
