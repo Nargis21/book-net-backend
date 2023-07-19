@@ -9,6 +9,12 @@ export type IUser = Document & {
   email: string;
 };
 
+export type IUserResponse = {
+  responseUser: IUser;
+  accessToken: string;
+  refreshToken?: string;
+};
+
 //statics
 export type UserModel = {
   isUserExist(

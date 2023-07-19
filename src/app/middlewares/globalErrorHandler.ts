@@ -7,6 +7,7 @@ import handleValidationError from '../../errors/handleValidationError';
 import ApiError from '../../errors/ApiError';
 import { ZodError } from 'zod';
 import handleZodError from '../../errors/handleZodError';
+import handleDuplicateKeyError from '../../errors/handleDuplicateKeyError';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;
@@ -20,6 +21,11 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     errorMessages = simplifiedError.errorMessages;
   } else if (err instanceof ZodError) {
     const simplifiedError = handleZodError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorMessages = simplifiedError.errorMessages;
+  } else if (err.code === 11000) {
+    const simplifiedError = handleDuplicateKeyError(err);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorMessages = simplifiedError.errorMessages;

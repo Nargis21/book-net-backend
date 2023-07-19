@@ -76,8 +76,23 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
     accessToken: newAccessToken,
   };
 };
+const getAuth = async (token: string) => {
+  let verifiedToken = null;
+
+  //verify refresh token
+  try {
+    verifiedToken = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+  } catch (error) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid token');
+  }
+
+  return {
+    payload: verifiedToken,
+  };
+};
 
 export const AuthService = {
   loginUser,
   refreshToken,
+  getAuth,
 };

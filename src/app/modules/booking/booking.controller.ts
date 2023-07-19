@@ -17,18 +17,6 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// const getAllOrders = catchAsync(async (req: Request, res: Response) => {
-//   const userId = req.user?._id;
-//   const role = req.user?.role;
-//   const result = await OrderService.getAllOrders(userId, role);
-//   sendResponse<IOrder[]>(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Orders retrieved successfully',
-//     data: result,
-//   });
-// });
-
 const getBookings = catchAsync(async (req: Request, res: Response) => {
   // const userId = req.user?._id;
   const userId = req.params.id;
