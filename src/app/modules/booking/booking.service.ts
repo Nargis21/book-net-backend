@@ -5,7 +5,7 @@ import { Booking } from './booking.model';
 
 const createBooking = async (
   bookingData: IBooking,
-  userId
+  userId: string
 ): Promise<IBooking | null> => {
   const booking = await Booking.find({ renter: userId });
   if (booking.length === 2) {
