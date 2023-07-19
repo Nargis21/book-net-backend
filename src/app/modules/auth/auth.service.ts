@@ -78,16 +78,21 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 };
 const getAuth = async (token: string) => {
   let verifiedToken = null;
-
-  //verify refresh token
+  const accessToken = token.split(' ')[1];
+  //verify token
   try {
-    verifiedToken = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+    verifiedToken = jwtHelpers.verifyToken(
+      accessToken,
+      config.jwt.secret as Secret
+    );
   } catch (error) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid token');
   }
 
+  const user = await User.findById(verifiedToken._id);
+
   return {
-    payload: verifiedToken,
+    user: user,
   };
 };
 
