@@ -10,6 +10,7 @@ import { IHouse } from './house.interface';
 
 const createHouse = catchAsync(async (req: Request, res: Response) => {
   const { ...houseData } = req.body;
+  console.log(houseData);
   const result = await HouseService.createHouse(houseData);
 
   sendResponse(res, {
@@ -34,8 +35,8 @@ const getAllHouses = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getOwnedHouse = catchAsync(async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const result = await HouseService.getOwnedHouse(id);
+  const userId = req.user?._id;
+  const result = await HouseService.getOwnedHouse(userId);
   sendResponse<IHouse[]>(res, {
     statusCode: httpStatus.OK,
     success: true,

@@ -26,7 +26,7 @@ const createHouseZodSchema = z.object({
       .positive('Rent per month should be a positive number'),
     phoneNumber: z
       .string()
-      .regex(/^01[0-9]{9}$/, 'Invalid phone number format'),
+      .regex(/^(\+88)?01[0-9]{9}$/, 'Invalid phone number format'),
     description: z.string().nonempty('Description is required'),
     owner: z.string().nonempty('Owner Id is required'),
   }),
@@ -44,7 +44,7 @@ const updateHouseZodSchema = z.object({
     rentPerMonth: z.number().min(1).positive().optional(),
     phoneNumber: z
       .string()
-      .regex(/^01[0-9]{9}$/)
+      .regex(/^(\+88)?01[0-9]{9}$/)
       .optional(),
     description: z.string().optional(),
     owner: z.string().optional(),

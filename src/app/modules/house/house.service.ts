@@ -85,12 +85,12 @@ const updateHouse = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'House does not exist');
   }
 
-  // if (house.owner.toString() !== userId) {
-  //   throw new ApiError(
-  //     httpStatus.FORBIDDEN,
-  //     'You are not the owner of this house'
-  //   );
-  // }
+  if (house.owner.toString() !== userId) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not the owner of this house'
+    );
+  }
 
   const result = await House.findOneAndUpdate({ _id: houseId }, payload, {
     new: true,

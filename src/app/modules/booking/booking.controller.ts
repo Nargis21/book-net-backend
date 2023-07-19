@@ -6,8 +6,9 @@ import { BookingService } from './booking.service';
 import { IBooking } from './booking.interface';
 
 const createBooking = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?._id;
   const { ...bookingData } = req.body;
-  const result = await BookingService.createBooking(bookingData);
+  const result = await BookingService.createBooking(bookingData, userId);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -18,8 +19,7 @@ const createBooking = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getBookings = catchAsync(async (req: Request, res: Response) => {
-  // const userId = req.user?._id;
-  const userId = req.params.id;
+  const userId = req.user?._id;
   const result = await BookingService.getBookings(userId);
   sendResponse<IBooking[]>(res, {
     statusCode: httpStatus.OK,

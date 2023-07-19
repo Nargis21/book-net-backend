@@ -10,19 +10,15 @@ const router = express.Router();
 router.post(
   '/',
   validateRequest(BookingValidation.createBookingZodSchema),
-  // auth(ENUM_USER_ROLE.BUYER),
+  auth(ENUM_USER_ROLE.RENTER),
   BookingController.createBooking
 );
 
-router.get(
-  '/:id',
-  // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
-  BookingController.getBookings
-);
+router.get('/', auth(ENUM_USER_ROLE.RENTER), BookingController.getBookings);
 
 router.delete(
   '/:id',
-  // auth(ENUM_USER_ROLE.SELLER),
+  auth(ENUM_USER_ROLE.RENTER),
   BookingController.deleteBooking
 );
 
