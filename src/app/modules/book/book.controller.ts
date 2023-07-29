@@ -1,22 +1,22 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
-import { HouseService } from './house.service';
+import { BookService, HouseService } from './house.service';
 import { Request, Response } from 'express';
 import pick from '../../../shared/pick';
 import { houseFilterableFields } from './house.constant';
 import { paginationFields } from '../../../constants/pagination';
-import { IHouse } from './house.interface';
+import { IBook } from './book.interface';
 
-const createHouse = catchAsync(async (req: Request, res: Response) => {
-  const { ...houseData } = req.body;
-  console.log(houseData);
-  const result = await HouseService.createHouse(houseData);
+const createBook = catchAsync(async (req: Request, res: Response) => {
+  const { ...bookData } = req.body;
+  console.log(bookData);
+  const result = await BookService.createBook(bookData);
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
-    message: 'House created successfully',
+    message: 'Book created successfully',
     data: result,
   });
 });
@@ -25,7 +25,7 @@ const getAllHouses = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, houseFilterableFields);
   const paginationOptions = pick(req.query, paginationFields);
   const result = await HouseService.getAllHouses(filters, paginationOptions);
-  sendResponse<IHouse[]>(res, {
+  sendResponse<IBook[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Cows retrieved successfully',
@@ -37,7 +37,7 @@ const getAllHouses = catchAsync(async (req: Request, res: Response) => {
 const getOwnedHouse = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?._id;
   const result = await HouseService.getOwnedHouse(userId);
-  sendResponse<IHouse[]>(res, {
+  sendResponse<IBook[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'Houses retrieved successfully',
@@ -50,7 +50,7 @@ const updateHouse = catchAsync(async (req: Request, res: Response) => {
   const houseId = req.params.id;
   const updatedData = req.body;
   const result = await HouseService.updateHouse(userId, houseId, updatedData);
-  sendResponse<IHouse>(res, {
+  sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'House updated successfully',
@@ -62,7 +62,7 @@ const deleteHouse = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user?._id;
   const houseId = req.params.id;
   const result = await HouseService.deleteHouse(userId, houseId);
-  sendResponse<IHouse | null>(res, {
+  sendResponse<IBook | null>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'House deleted successfully',
@@ -70,8 +70,8 @@ const deleteHouse = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const HouseController = {
-  createHouse,
+export const BookController = {
+  createBook,
   getOwnedHouse,
   getAllHouses,
   updateHouse,

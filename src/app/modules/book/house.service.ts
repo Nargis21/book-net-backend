@@ -3,23 +3,23 @@ import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelpers';
 import { IGenericPaginationResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IHouse, IHouseFilters } from './house.interface';
-import { House } from './house.model';
+import { IBook, IBookFilters } from './book.interface';
+import { Book } from './book.model';
 import { houseSearchableFields } from './house.constant';
 import httpStatus from 'http-status';
 
-const createHouse = async (house: IHouse): Promise<IHouse | null> => {
-  const createdHouse = House.create(house);
-  if (!createdHouse) {
-    throw new ApiError(400, 'Failed to create house!');
+const createBook = async (book: IBook): Promise<IBook | null> => {
+  const createdBook = Book.create(book);
+  if (!createdBook) {
+    throw new ApiError(400, 'Failed to create book!');
   }
-  return createdHouse;
+  return createdBook;
 };
 
 const getAllHouses = async (
-  filters: IHouseFilters,
+  filters: IBookFilters,
   paginationOptions: IPaginationOptions
-): Promise<IGenericPaginationResponse<IHouse[]>> => {
+): Promise<IGenericPaginationResponse<IBook[]>> => {
   const { searchTerm, ...filtersData } = filters;
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelpers.calculatePagination(paginationOptions);
@@ -70,7 +70,7 @@ const getAllHouses = async (
   };
 };
 
-const getOwnedHouse = async (id: string): Promise<IHouse[]> => {
+const getOwnedHouse = async (id: string): Promise<IBook[]> => {
   const result = await House.find({ owner: id }).populate('owner');
   return result;
 };
@@ -78,8 +78,8 @@ const getOwnedHouse = async (id: string): Promise<IHouse[]> => {
 const updateHouse = async (
   userId: string,
   houseId: string,
-  payload: Partial<IHouse>
-): Promise<IHouse | null> => {
+  payload: Partial<IBook>
+): Promise<IBook | null> => {
   const house = await House.findById(houseId);
   if (!house) {
     throw new ApiError(httpStatus.NOT_FOUND, 'House does not exist');
@@ -101,7 +101,7 @@ const updateHouse = async (
 const deleteHouse = async (
   userId: string,
   houseId: string
-): Promise<IHouse | null> => {
+): Promise<IBook | null> => {
   const house = await House.findById(houseId);
   if (!house) {
     throw new ApiError(httpStatus.NOT_FOUND, 'house does not exist');
@@ -118,8 +118,8 @@ const deleteHouse = async (
   return result;
 };
 
-export const HouseService = {
-  createHouse,
+export const BookService = {
+  createBook,
   getAllHouses,
   getOwnedHouse,
   updateHouse,

@@ -19,12 +19,12 @@ router.post(
   AuthController.loginUser
 );
 
-router.get('/getAuth', AuthController.getAuth);
+// router.get('/getAuth', AuthController.getAuth);
 
-router.post(
-  '/refresh-token',
-  validateRequest(AuthValidation.refreshTokenZodSchema),
-  AuthController.refreshToken
-);
+// router.post(
+//   '/refresh-token',
+//   validateRequest(AuthValidation.refreshTokenZodSchema),
+//   AuthController.refreshToken
+// );
 
 export const AuthRoutes = router;

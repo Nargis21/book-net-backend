@@ -1,5 +1,5 @@
 import { Model, Types } from 'mongoose';
-import { IHouse } from '../house/house.interface';
+import { IHouse } from '../book/book.interface';
 import { IUser } from '../user/user.interface';
 
 export type IBooking = {
