@@ -11,30 +11,25 @@ import { Secret } from 'jsonwebtoken';
 import { User } from '../user/user.model';
 
 const loginUser = async (payload: ILoginUser): Promise<IUserLoginResponse> => {
-  const { email, password } = payload;
+  const { userEmail } = payload;
 
   //check admin exist
-  const isUserExist = await User.isUserExist(email);
+  const isUserExist = await User.isUserExist(userEmail);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
-  const { _id, password: savedPassword, role } = isUserExist;
-
-  //check password
-  if (!(await User.isPasswordMatched(password, savedPassword))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
-  }
+  const { _id, email } = isUserExist;
 
   //create access token
   const accessToken = jwtHelpers.createToken(
-    { _id, role },
+    { _id, email },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
 
   //create refresh token
   const refreshToken = jwtHelpers.createToken(
-    { _id, role },
+    { _id, email },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
