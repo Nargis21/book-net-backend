@@ -6,8 +6,9 @@ export type IBook = {
   author: string;
   genre: string;
   publicationDate: string;
+  image: string;
   reviews?: string[];
-  owner: Types.ObjectId | IUser;
+  owner: string;
 };
 
 export type IBookFilters = {

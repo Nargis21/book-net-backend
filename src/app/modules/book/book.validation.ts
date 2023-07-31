@@ -7,6 +7,7 @@ const createBookZodSchema = z.object({
     author: z.string().nonempty('Author is required'),
     genre: z.string().nonempty('Genre is required'),
     publicationDate: z.string().nonempty('Publication date is required'),
+    image: z.string().nonempty('Image is required'),
     reviews: z.array(z.string()).optional(),
     owner: z.string().nonempty('Owner Id is required'),
   }),

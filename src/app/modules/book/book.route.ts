@@ -2,14 +2,13 @@ import express from 'express';
 import validateRequest from '../../middlewares/validateRequest';
 import { BookValidation } from './book.validation';
 import { BookController } from './book.controller';
-import { ENUM_USER_ROLE } from '../../../enums/users';
 import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
 router.post(
   '/',
-  // auth(ENUM_USER_ROLE.OWNER),
+  auth(),
   validateRequest(BookValidation.createBookZodSchema),
   BookController.createBook
 );
