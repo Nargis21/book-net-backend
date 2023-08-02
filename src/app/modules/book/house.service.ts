@@ -79,6 +79,20 @@ const getSingleBook = async (id: string): Promise<IBook | null> => {
   return result;
 };
 
+const addReview = async (
+  bookId: string,
+  payload: object
+): Promise<IBook | null> => {
+  const book = await Book.findById(bookId);
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book does not exist');
+  }
+  book.reviews.push(payload);
+  const result = await book.save();
+
+  return result;
+};
+
 const updateHouse = async (
   userId: string,
   houseId: string,
@@ -127,6 +141,7 @@ export const BookService = {
   getAllHouses,
   getAllBooks,
   getSingleBook,
+  addReview,
   updateHouse,
   deleteHouse,
 };

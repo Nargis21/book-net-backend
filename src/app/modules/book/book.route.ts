@@ -15,6 +15,7 @@ router.post(
 
 router.get('/', BookController.getAllBooks);
 router.get('/:id', BookController.getSingleBook);
+router.patch('/add-review/:id', BookController.addReview);
 
 // router.patch(
 //   '/:id',
