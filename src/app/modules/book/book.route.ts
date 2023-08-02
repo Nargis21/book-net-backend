@@ -13,11 +13,8 @@ router.post(
   BookController.createBook
 );
 
-// router.get(
-//   '/getOwned',
-//   auth(ENUM_USER_ROLE.OWNER),
-//   HouseController.getOwnedHouse
-// );
+router.get('/', BookController.getAllBooks);
+router.get('/:id', BookController.getSingleBook);
 
 // router.patch(
 //   '/:id',

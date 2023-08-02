@@ -70,8 +70,12 @@ const getAllHouses = async (
   };
 };
 
-const getOwnedHouse = async (id: string): Promise<IBook[]> => {
-  const result = await House.find({ owner: id }).populate('owner');
+const getAllBooks = async (): Promise<IBook[]> => {
+  const result = await Book.find();
+  return result;
+};
+const getSingleBook = async (id: string): Promise<IBook | null> => {
+  const result = await Book.findById(id);
   return result;
 };
 
@@ -121,7 +125,8 @@ const deleteHouse = async (
 export const BookService = {
   createBook,
   getAllHouses,
-  getOwnedHouse,
+  getAllBooks,
+  getSingleBook,
   updateHouse,
   deleteHouse,
 };

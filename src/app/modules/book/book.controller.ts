@@ -34,13 +34,22 @@ const getAllHouses = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getOwnedHouse = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
-  const result = await HouseService.getOwnedHouse(userId);
+const getAllBooks = catchAsync(async (req: Request, res: Response) => {
+  const result = await BookService.getAllBooks();
   sendResponse<IBook[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Houses retrieved successfully',
+    message: 'Books retrieved successfully',
+    data: result,
+  });
+});
+const getSingleBook = catchAsync(async (req: Request, res: Response) => {
+  const bookId = req.params.id;
+  const result = await BookService.getSingleBook(bookId);
+  sendResponse<IBook | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Book retrieved successfully',
     data: result,
   });
 });
@@ -72,7 +81,8 @@ const deleteHouse = catchAsync(async (req: Request, res: Response) => {
 
 export const BookController = {
   createBook,
-  getOwnedHouse,
+  getAllBooks,
+  getSingleBook,
   getAllHouses,
   updateHouse,
   deleteHouse,
