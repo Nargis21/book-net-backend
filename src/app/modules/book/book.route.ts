@@ -24,7 +24,7 @@ router.patch(
   BookController.updateBook
 );
 
-// router.delete('/:id', auth(ENUM_USER_ROLE.OWNER), HouseController.deleteHouse);
+router.delete('/:id', auth(), BookController.deleteBook);
 
 // router.get('/', HouseController.getAllHouses);
 

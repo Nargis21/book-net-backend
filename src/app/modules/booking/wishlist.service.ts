@@ -1,27 +1,19 @@
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
-import { IBooking } from './booking.interface';
-import { Booking } from './booking.model';
+import { IWishlist } from './wishlist.interface';
+import { Wishlist } from './wishlist.model';
 
 const createBooking = async (
-  bookingData: IBooking,
-  userId: string
-): Promise<IBooking | null> => {
-  const booking = await Booking.find({ renter: userId });
-  if (booking.length === 2) {
-    throw new ApiError(
-      400,
-      'You can book maximum 2 house. Please free up your space and try again.'
-    );
+  wishlistData: IWishlist
+): Promise<IWishlist | null> => {
+  const createWishlist = Wishlist.create(wishlistData);
+  if (!createWishlist) {
+    throw new ApiError(400, 'Failed to create wishlist!');
   }
-  const createdBooking = Booking.create(bookingData);
-  if (!createdBooking) {
-    throw new ApiError(400, 'Failed to create booking!');
-  }
-  return createdBooking;
+  return createWishlist;
 };
 
-const getBookings = async (userId: string): Promise<IBooking[]> => {
+const getBookings = async (userId: string): Promise<IWishlist[]> => {
   const bookings = await Booking.find({ renter: userId })
     .populate({
       path: 'house',
@@ -39,7 +31,7 @@ const getBookings = async (userId: string): Promise<IBooking[]> => {
 const deleteBooking = async (
   userId: string,
   bookingId: string
-): Promise<IBooking | null> => {
+): Promise<IWishlist | null> => {
   const booking = await Booking.findById(bookingId);
   if (!booking) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Booking does not exist');

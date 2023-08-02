@@ -78,14 +78,14 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteHouse = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
-  const houseId = req.params.id;
-  const result = await HouseService.deleteHouse(userId, houseId);
+const deleteBook = catchAsync(async (req: Request, res: Response) => {
+  const userEmail = req.user?.email;
+  const bookId = req.params.id;
+  const result = await BookService.deleteBook(userEmail, bookId);
   sendResponse<IBook | null>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'House deleted successfully',
+    message: 'Book deleted successfully',
     data: result,
   });
 });
@@ -97,5 +97,5 @@ export const BookController = {
   addReview,
   getAllHouses,
   updateBook,
-  deleteHouse,
+  deleteBook,
 };

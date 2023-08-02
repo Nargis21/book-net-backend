@@ -116,23 +116,23 @@ const updateBook = async (
   return result;
 };
 
-const deleteHouse = async (
-  userId: string,
-  houseId: string
+const deleteBook = async (
+  userEmail: string,
+  bookId: string
 ): Promise<IBook | null> => {
-  const house = await House.findById(houseId);
-  if (!house) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'house does not exist');
+  const book = await Book.findById(bookId);
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book does not exist');
   }
 
-  // if (house.owner.toString() !== userId) {
-  //   throw new ApiError(
-  //     httpStatus.FORBIDDEN,
-  //     'You are not the owner of this house'
-  //   );
-  // }
+  if (book.owner !== userEmail) {
+    throw new ApiError(
+      httpStatus.FORBIDDEN,
+      'You are not the owner of this book'
+    );
+  }
 
-  const result = await House.findByIdAndDelete(houseId);
+  const result = await Book.findByIdAndDelete(bookId);
   return result;
 };
 
@@ -143,5 +143,5 @@ export const BookService = {
   getSingleBook,
   addReview,
   updateBook,
-  deleteHouse,
+  deleteBook,
 };
