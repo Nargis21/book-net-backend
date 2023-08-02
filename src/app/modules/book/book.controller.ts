@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
-import { BookService, HouseService } from './house.service';
+import { BookService, HouseService } from './book.service';
 import { Request, Response } from 'express';
 import pick from '../../../shared/pick';
 import { houseFilterableFields } from './house.constant';
@@ -65,15 +65,15 @@ const addReview = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const updateHouse = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
-  const houseId = req.params.id;
+const updateBook = catchAsync(async (req: Request, res: Response) => {
+  const userEmail = req.user?.email;
+  const bookId = req.params.id;
   const updatedData = req.body;
-  const result = await HouseService.updateHouse(userId, houseId, updatedData);
+  const result = await BookService.updateBook(userEmail, bookId, updatedData);
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'House updated successfully',
+    message: 'Book updated successfully',
     data: result,
   });
 });
@@ -96,6 +96,6 @@ export const BookController = {
   getSingleBook,
   addReview,
   getAllHouses,
-  updateHouse,
+  updateBook,
   deleteHouse,
 };

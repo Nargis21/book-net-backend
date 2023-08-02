@@ -12,27 +12,19 @@ const createBookZodSchema = z.object({
     owner: z.string().nonempty('Owner Id is required'),
   }),
 });
-const updateHouseZodSchema = z.object({
+const updateBookZodSchema = z.object({
   body: z.object({
-    name: z.string().optional(),
-    address: z.string().optional(),
-    city: z.string().optional(),
-    bedrooms: z.number().min(1).positive().optional(),
-    bathrooms: z.number().min(1).positive().optional(),
-    roomSize: z.number().min(1).positive().optional(),
-    picture: z.string().optional(),
-    availabilityDate: z.string().optional(),
-    rentPerMonth: z.number().min(1).positive().optional(),
-    phoneNumber: z
-      .string()
-      .regex(/^(\+88)?01[0-9]{9}$/)
-      .optional(),
-    description: z.string().optional(),
+    title: z.string().optional(),
+    author: z.string().optional(),
+    genre: z.string().optional(),
+    publicationDate: z.string().optional(),
+    image: z.string().optional(),
+    reviews: z.array(z.string()).optional(),
     owner: z.string().optional(),
   }),
 });
 
 export const BookValidation = {
   createBookZodSchema,
-  updateHouseZodSchema,
+  updateBookZodSchema,
 };

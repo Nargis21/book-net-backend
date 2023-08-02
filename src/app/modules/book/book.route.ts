@@ -17,12 +17,12 @@ router.get('/', BookController.getAllBooks);
 router.get('/:id', BookController.getSingleBook);
 router.patch('/add-review/:id', BookController.addReview);
 
-// router.patch(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.OWNER),
-//   validateRequest(HouseValidation.updateHouseZodSchema),
-//   HouseController.updateHouse
-// );
+router.patch(
+  '/:id',
+  auth(),
+  validateRequest(BookValidation.updateBookZodSchema),
+  BookController.updateBook
+);
 
 // router.delete('/:id', auth(ENUM_USER_ROLE.OWNER), HouseController.deleteHouse);
 
