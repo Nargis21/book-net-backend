@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import httpStatus from 'http-status';
-import { BookingService } from './wishlist.service';
-import { IBooking } from './wishlist.interface';
+import { WishlistService } from './wishlist.service';
+import { IWishlist } from './wishlist.interface';
 
 const createWishlist = catchAsync(async (req: Request, res: Response) => {
   const { ...wishlistData } = req.body;
-  const result = await BookingService.createBooking(wishlistData);
+  const result = await WishlistService.createWishlist(wishlistData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -17,13 +17,13 @@ const createWishlist = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getBookings = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
-  const result = await BookingService.getBookings(userId);
-  sendResponse<IBooking[]>(res, {
+const getWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userEmail = req.user?.email;
+  const result = await WishlistService.getWishlist(userEmail);
+  sendResponse<IWishlist[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Booking information retrieved successfully',
+    message: 'Wishlist retrieved successfully',
     data: result,
   });
 });
@@ -42,6 +42,6 @@ const deleteBooking = catchAsync(async (req: Request, res: Response) => {
 
 export const WishlistController = {
   createWishlist,
-  getBookings,
+  getWishlist,
   deleteBooking,
 };

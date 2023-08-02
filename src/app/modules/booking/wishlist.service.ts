@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import { IWishlist } from './wishlist.interface';
 import { Wishlist } from './wishlist.model';
 
-const createBooking = async (
+const createWishlist = async (
   wishlistData: IWishlist
 ): Promise<IWishlist | null> => {
   const createWishlist = Wishlist.create(wishlistData);
@@ -13,19 +13,10 @@ const createBooking = async (
   return createWishlist;
 };
 
-const getBookings = async (userId: string): Promise<IWishlist[]> => {
-  const bookings = await Booking.find({ renter: userId })
-    .populate({
-      path: 'house',
-      populate: [
-        {
-          path: 'owner',
-        },
-      ],
-    })
-    .populate('renter');
+const getWishlist = async (userEmail: string): Promise<IWishlist[]> => {
+  const wishlist = await Wishlist.find({ email: userEmail }).populate('book');
 
-  return bookings;
+  return wishlist;
 };
 
 const deleteBooking = async (
@@ -48,8 +39,8 @@ const deleteBooking = async (
   return result;
 };
 
-export const BookingService = {
-  createBooking,
-  getBookings,
+export const WishlistService = {
+  createWishlist,
+  getWishlist,
   deleteBooking,
 };

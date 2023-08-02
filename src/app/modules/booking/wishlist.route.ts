@@ -14,7 +14,7 @@ router.post(
   WishlistController.createWishlist
 );
 
-// router.get('/', auth(ENUM_USER_ROLE.RENTER), BookingController.getBookings);
+router.get('/', auth(), WishlistController.getWishlist);
 
 // router.delete(
 //   '/:id',
