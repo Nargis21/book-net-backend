@@ -37,9 +37,27 @@ const deleteCurrentList = async (
   const result = await CurrentList.findByIdAndDelete(currentListId);
   return result;
 };
+const updateCurrentList = async (
+  userEmail: string,
+  currentListId: string
+): Promise<ICurrentList | null> => {
+  const currentList = await CurrentList.findById(currentListId);
+  if (!currentList) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'book does not exist');
+  }
+
+  if (currentList.email !== userEmail) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'This is not your listed book');
+  }
+
+  currentList.isComplete = true;
+  const result = await currentList.save();
+  return result;
+};
 
 export const CurrentListService = {
   createCurrentList,
   getCurrentList,
   deleteCurrentList,
+  updateCurrentList,
 };

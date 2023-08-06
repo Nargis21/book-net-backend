@@ -12,9 +12,8 @@ router.post(
   auth(),
   CurrentListController.createCurrentList
 );
-
-router.get('/', auth(), CurrentListController.getCurrentList);
-
 router.delete('/:id', auth(), CurrentListController.deleteCurrentList);
+router.patch('/:id', auth(), CurrentListController.updateCurrentList);
+router.get('/', auth(), CurrentListController.getCurrentList);
 
 export const CurrentListRoutes = router;

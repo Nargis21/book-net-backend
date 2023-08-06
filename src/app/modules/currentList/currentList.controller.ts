@@ -42,9 +42,24 @@ const deleteCurrentList = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateCurrentList = catchAsync(async (req: Request, res: Response) => {
+  const userEmail = req.user?.email;
+  const currentListId = req.params.id;
+  const result = await CurrentListService.updateCurrentList(
+    userEmail,
+    currentListId
+  );
+  sendResponse<ICurrentList | null>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Current list status updated successfully',
+    data: result,
+  });
+});
 
 export const CurrentListController = {
   createCurrentList,
   getCurrentList,
   deleteCurrentList,
+  updateCurrentList,
 };
