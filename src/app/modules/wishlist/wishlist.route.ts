@@ -1,9 +1,8 @@
 import express from 'express';
-import { BookingController, WishlistController } from './wishlist.controller';
+import { WishlistController } from './wishlist.controller';
 import validateRequest from '../../middlewares/validateRequest';
-import { BookingValidation, WishlistValidation } from './wishlist.validation';
+import { WishlistValidation } from './wishlist.validation';
 import auth from '../../middlewares/auth';
-import { ENUM_USER_ROLE } from '../../../enums/users';
 
 const router = express.Router();
 
@@ -16,10 +15,6 @@ router.post(
 
 router.get('/', auth(), WishlistController.getWishlist);
 
-// router.delete(
-//   '/:id',
-//   auth(ENUM_USER_ROLE.RENTER),
-//   BookingController.deleteBooking
-// );
+router.delete('/:id', auth(), WishlistController.deleteWishlist);
 
 export const WishlistRoutes = router;

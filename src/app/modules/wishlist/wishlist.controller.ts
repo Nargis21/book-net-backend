@@ -28,14 +28,14 @@ const getWishlist = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteBooking = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.user?._id;
-  const bookingId = req.params.id;
-  const result = await BookingService.deleteBooking(userId, bookingId);
-  sendResponse<IBooking | null>(res, {
+const deleteWishlist = catchAsync(async (req: Request, res: Response) => {
+  const userEmail = req.user?.email;
+  const wishlistId = req.params.id;
+  const result = await WishlistService.deleteWishlist(userEmail, wishlistId);
+  sendResponse<IWishlist | null>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Booking deleted successfully',
+    message: 'Wishlist deleted successfully',
     data: result,
   });
 });
@@ -43,5 +43,5 @@ const deleteBooking = catchAsync(async (req: Request, res: Response) => {
 export const WishlistController = {
   createWishlist,
   getWishlist,
-  deleteBooking,
+  deleteWishlist,
 };

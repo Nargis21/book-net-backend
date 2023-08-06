@@ -19,28 +19,25 @@ const getWishlist = async (userEmail: string): Promise<IWishlist[]> => {
   return wishlist;
 };
 
-const deleteBooking = async (
-  userId: string,
-  bookingId: string
+const deleteWishlist = async (
+  userEmail: string,
+  wishlistId: string
 ): Promise<IWishlist | null> => {
-  const booking = await Booking.findById(bookingId);
-  if (!booking) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Booking does not exist');
+  const wishlist = await Wishlist.findById(wishlistId);
+  if (!wishlist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'wishlist does not exist');
   }
 
-  if (booking.renter.toString() !== userId) {
-    throw new ApiError(
-      httpStatus.FORBIDDEN,
-      'You are not the owner of this house'
-    );
+  if (wishlist.email !== userEmail) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'This is not your wishlist book');
   }
 
-  const result = await Booking.findByIdAndDelete(bookingId);
+  const result = await Wishlist.findByIdAndDelete(wishlistId);
   return result;
 };
 
 export const WishlistService = {
   createWishlist,
   getWishlist,
-  deleteBooking,
+  deleteWishlist,
 };
