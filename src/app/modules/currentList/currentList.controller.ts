@@ -28,10 +28,13 @@ const getCurrentList = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const deleteWishlist = catchAsync(async (req: Request, res: Response) => {
+const deleteCurrentList = catchAsync(async (req: Request, res: Response) => {
   const userEmail = req.user?.email;
-  const wishlistId = req.params.id;
-  const result = await CurrentListService.deleteWishlist(userEmail, wishlistId);
+  const currentListId = req.params.id;
+  const result = await CurrentListService.deleteCurrentList(
+    userEmail,
+    currentListId
+  );
   sendResponse<ICurrentList | null>(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -43,5 +46,5 @@ const deleteWishlist = catchAsync(async (req: Request, res: Response) => {
 export const CurrentListController = {
   createCurrentList,
   getCurrentList,
-  deleteWishlist,
+  deleteCurrentList,
 };

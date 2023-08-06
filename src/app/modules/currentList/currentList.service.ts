@@ -21,25 +21,25 @@ const getCurrentList = async (userEmail: string): Promise<ICurrentList[]> => {
   return currentList;
 };
 
-const deleteWishlist = async (
+const deleteCurrentList = async (
   userEmail: string,
-  wishlistId: string
+  currentListId: string
 ): Promise<ICurrentList | null> => {
-  const wishlist = await CurrentList.findById(wishlistId);
-  if (!wishlist) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'wishlist does not exist');
+  const currentList = await CurrentList.findById(currentListId);
+  if (!currentList) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'book does not exist');
   }
 
-  if (wishlist.email !== userEmail) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'This is not your wishlist book');
+  if (currentList.email !== userEmail) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'This is not your listed book');
   }
 
-  const result = await CurrentList.findByIdAndDelete(wishlistId);
+  const result = await CurrentList.findByIdAndDelete(currentListId);
   return result;
 };
 
 export const CurrentListService = {
   createCurrentList,
   getCurrentList,
-  deleteWishlist,
+  deleteCurrentList,
 };

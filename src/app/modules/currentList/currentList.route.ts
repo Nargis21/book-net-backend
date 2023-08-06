@@ -15,6 +15,6 @@ router.post(
 
 router.get('/', auth(), CurrentListController.getCurrentList);
 
-router.delete('/:id', auth(), CurrentListController.deleteWishlist);
+router.delete('/:id', auth(), CurrentListController.deleteCurrentList);
 
 export const CurrentListRoutes = router;
