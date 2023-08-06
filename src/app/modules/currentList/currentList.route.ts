@@ -13,7 +13,7 @@ router.post(
   CurrentListController.createCurrentList
 );
 
-router.get('/', auth(), CurrentListController.getWishlist);
+router.get('/', auth(), CurrentListController.getCurrentList);
 
 router.delete('/:id', auth(), CurrentListController.deleteWishlist);
 

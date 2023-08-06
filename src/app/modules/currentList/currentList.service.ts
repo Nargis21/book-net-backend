@@ -13,12 +13,12 @@ const createCurrentList = async (
   return createCurrentList;
 };
 
-const getWishlist = async (userEmail: string): Promise<ICurrentList[]> => {
-  const wishlist = await CurrentList.find({ email: userEmail }).populate(
+const getCurrentList = async (userEmail: string): Promise<ICurrentList[]> => {
+  const currentList = await CurrentList.find({ email: userEmail }).populate(
     'book'
   );
 
-  return wishlist;
+  return currentList;
 };
 
 const deleteWishlist = async (
@@ -40,6 +40,6 @@ const deleteWishlist = async (
 
 export const CurrentListService = {
   createCurrentList,
-  getWishlist,
+  getCurrentList,
   deleteWishlist,
 };
