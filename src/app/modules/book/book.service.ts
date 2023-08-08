@@ -74,6 +74,12 @@ const getAllBooks = async (): Promise<IBook[]> => {
   const result = await Book.find();
   return result;
 };
+
+const getTopTen = async (): Promise<IBook[]> => {
+  const result = await Book.find().sort({ createdAt: -1 }).limit(10);
+  return result;
+};
+
 const getSingleBook = async (id: string): Promise<IBook | null> => {
   const result = await Book.findById(id);
   return result;
@@ -140,6 +146,7 @@ export const BookService = {
   createBook,
   getAllHouses,
   getAllBooks,
+  getTopTen,
   getSingleBook,
   addReview,
   updateBook,

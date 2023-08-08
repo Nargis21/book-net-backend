@@ -14,6 +14,7 @@ router.post(
 );
 
 router.get('/', BookController.getAllBooks);
+router.get('/get-top-ten', BookController.getTopTen);
 router.get('/:id', BookController.getSingleBook);
 router.patch('/add-review/:id', BookController.addReview);
 
