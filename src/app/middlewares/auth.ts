@@ -23,10 +23,6 @@ const auth = () => async (req: Request, res: Response, next: NextFunction) => {
     );
     req.user = verifiedUser;
 
-    // //protect by role
-    // if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-    //   throw new ApiError(httpStatus.FORBIDDEN, 'You are not permitted');
-    // }
     next();
   } catch (error) {
     next(error);

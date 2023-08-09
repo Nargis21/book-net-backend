@@ -1,16 +1,12 @@
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
-import { BookService, HouseService } from './book.service';
+import { BookService } from './book.service';
 import { Request, Response } from 'express';
-import pick from '../../../shared/pick';
-import { houseFilterableFields } from './house.constant';
-import { paginationFields } from '../../../constants/pagination';
 import { IBook } from './book.interface';
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
   const { ...bookData } = req.body;
-  console.log(bookData);
   const result = await BookService.createBook(bookData);
 
   sendResponse(res, {
@@ -18,19 +14,6 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
     statusCode: httpStatus.OK,
     message: 'Book created successfully',
     data: result,
-  });
-});
-
-const getAllHouses = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, houseFilterableFields);
-  const paginationOptions = pick(req.query, paginationFields);
-  const result = await HouseService.getAllHouses(filters, paginationOptions);
-  sendResponse<IBook[]>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Cows retrieved successfully',
-    meta: result.meta,
-    data: result.data,
   });
 });
 
@@ -76,6 +59,7 @@ const addReview = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
 const updateBook = catchAsync(async (req: Request, res: Response) => {
   const userEmail = req.user?.email;
   const bookId = req.params.id;
@@ -107,7 +91,6 @@ export const BookController = {
   getTopTen,
   getSingleBook,
   addReview,
-  getAllHouses,
   updateBook,
   deleteBook,
 };

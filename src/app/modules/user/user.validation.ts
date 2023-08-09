@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { role } from './user.constant';
 
 //req validation with zod
 const createUserZodSchema = z.object({

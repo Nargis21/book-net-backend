@@ -1,11 +1,6 @@
-import { SortOrder } from 'mongoose';
 import ApiError from '../../../errors/ApiError';
-import { paginationHelpers } from '../../../helpers/paginationHelpers';
-import { IGenericPaginationResponse } from '../../../interfaces/common';
-import { IPaginationOptions } from '../../../interfaces/pagination';
-import { IBook, IBookFilters } from './book.interface';
+import { IBook } from './book.interface';
 import { Book } from './book.model';
-import { houseSearchableFields } from './house.constant';
 import httpStatus from 'http-status';
 
 const createBook = async (book: IBook): Promise<IBook | null> => {
@@ -14,60 +9,6 @@ const createBook = async (book: IBook): Promise<IBook | null> => {
     throw new ApiError(400, 'Failed to create book!');
   }
   return createdBook;
-};
-
-const getAllHouses = async (
-  filters: IBookFilters,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericPaginationResponse<IBook[]>> => {
-  const { searchTerm, ...filtersData } = filters;
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
-
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      $or: houseSearchableFields.map(field => ({
-        [field]: {
-          $regex: searchTerm,
-          $options: 'i',
-        },
-      })),
-    });
-  }
-
-  if (Object.keys(filtersData).length) {
-    andConditions.push({
-      $and: Object.entries(filtersData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
-  }
-
-  const sortConditions: { [key: string]: SortOrder } = {};
-  if (sortBy && sortOrder) {
-    sortConditions[sortBy] = sortOrder;
-  }
-
-  const whereCondition =
-    andConditions.length > 0 ? { $and: andConditions } : {};
-
-  const result = await House.find(whereCondition)
-    .populate('owner')
-    .sort(sortConditions)
-    .skip(skip)
-    .limit(limit);
-  const total = await House.countDocuments(whereCondition);
-
-  return {
-    meta: {
-      page,
-      limit,
-      total,
-    },
-    data: result,
-  };
 };
 
 const getAllBooks = async (): Promise<IBook[]> => {
@@ -87,13 +28,13 @@ const getSingleBook = async (id: string): Promise<IBook | null> => {
 
 const addReview = async (
   bookId: string,
-  payload: object
+  payload: string
 ): Promise<IBook | null> => {
   const book = await Book.findById(bookId);
   if (!book) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Book does not exist');
   }
-  book.reviews.push(payload);
+  book?.reviews?.push(payload);
   const result = await book.save();
 
   return result;
@@ -144,7 +85,6 @@ const deleteBook = async (
 
 export const BookService = {
   createBook,
-  getAllHouses,
   getAllBooks,
   getTopTen,
   getSingleBook,

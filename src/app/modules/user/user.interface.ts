@@ -14,8 +14,4 @@ export type IUserResponse = {
 //statics
 export type UserModel = {
   isUserExist(email: string): Promise<Pick<IUser, '_id' | 'email'> | null>;
-  isPasswordMatched(
-    givenPassword: string,
-    savedPassword: string
-  ): Promise<boolean>;
 } & Model<IUser>;

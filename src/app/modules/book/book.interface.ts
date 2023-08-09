@@ -1,5 +1,4 @@
-import { Model, Types } from 'mongoose';
-import { IUser } from '../user/user.interface';
+import { Model } from 'mongoose';
 
 export type IBook = {
   title: string;
@@ -9,16 +8,6 @@ export type IBook = {
   image: string;
   reviews?: string[];
   owner: string;
-};
-
-export type IBookFilters = {
-  searchTerm?: string;
-  city?: string;
-  bedrooms?: string;
-  bathrooms?: string;
-  roomSize?: string;
-  availabilityDate?: string;
-  rentPerMonth?: string;
 };
 
 export type BookModel = Model<IBook, Record<string, unknown>>;

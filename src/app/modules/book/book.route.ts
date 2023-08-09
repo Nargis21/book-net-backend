@@ -27,6 +27,4 @@ router.patch(
 
 router.delete('/:id', auth(), BookController.deleteBook);
 
-// router.get('/', HouseController.getAllHouses);
-
 export const BookRoutes = router;
