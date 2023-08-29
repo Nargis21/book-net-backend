@@ -16,6 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 //Application routes
 app.use('/api/v1/', routes);
 
+app.use('/health-check', (req, res) => {
+  res.send('Server is online');
+});
+
 //global error handler -- this is for synchronous api request
 app.use(globalErrorHandler);
 
